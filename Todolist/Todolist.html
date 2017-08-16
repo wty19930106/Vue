@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>todos</title>
+    <link rel="stylesheet" href="./index.css">
+    <script type="text/javascript" src="vue.js">
+    </script>
+</head>
+
+<body>
+    <section class="todoapp">
+        <div>
+            <header class="header" >
+                <h1>todos</h1>
+                <input
+                class="new-todo"
+                placeholder="请输入内容"
+                @keyUp.13="keyUp"
+                v-model="value"
+                >
+            </header>
+            <section class="main">
+                <input class="toggle-all"
+                type="checkbox"
+                v-model="all"
+                @click="allCheck">
+                <ul class="todo-list">
+                    <li :class="{completed:item.checked}" v-for="(item, index) in arr">
+                        <div class="view">
+                            <input class="toggle"
+                            type="checkbox"
+                            v-model="item.checked"
+                            @click="check">
+                            <label>{{item.txt}}</label>
+                            <button class="destroy"></button>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+        </div>
+        <footer class="footer">
+          <span class="todo-count">
+            <strong>0</strong>
+            <span>条未选中</span>
+          </span>
+          <ul class="filters">
+            <li>
+              <a href="#/all" class='selected'>全部</a>
+            </li>
+            <li>
+              <a href="#/active">未完成</a>
+            </li>
+            <li>
+              <a href="#/completed">已完成</a>
+            </li>
+          </ul>
+          <button class="clear-completed">清除完成项
+          </button>
+        </footer>
+    </section>
+    <script type="text/javascript">
+      var vm = new Vue({
+        el:'.todoapp',
+        data:{
+          arr:[
+            {txt:'呵呵哒',checked:true,id:1},
+            {txt:'呵呵哒1',checked:false,id:2},
+            {txt:'呵呵哒2',checked:false,id:3},
+            {txt:'呵呵哒3',checked:false,id:4}
+          ],
+          value:'',
+          all:false
+        },
+        methods:{
+          keyUp:function(){
+            let newdata={
+              txt:this.value,
+              checked:false,
+              id:+new Date,
+            }
+            this.arr.unshift(newdata);
+            this.check();
+            this.value='';
+          },
+          allCheck:function(){
+          this.arr.forEach(e=>e.checked=this.all);
+          },
+          check:function(){
+          this.all=this.arr.every(e=>e.checked)
+          }
+        }
+      })
+    </script>
+</body>
+</html>
